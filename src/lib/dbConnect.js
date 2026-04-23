@@ -1,22 +1,36 @@
-require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+import { MongoClient, ServerApiVersion } from "mongodb";
+
 const uri = process.env.MONGODBURI;
-const dbname = process.env.DBNAME;
+const dbName = process.env.DBNAME;
 
-export const collection = {
-  PRODUCTS: 'products',
-}
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-export const dbConnect = (cname) => {
-  return client.db(dbname).collection(cname);
+if (!uri) {
+  throw new Error("Please define MONGODBURI in .env.local");
 }
 
-console.log("URI:", uri);
+let client;
+let clientPromise;
+
+if (!global._mongoClientPromise) {
+  client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+
+  global._mongoClientPromise = client.connect();
+}
+
+clientPromise = global._mongoClientPromise;
+
+// collections helper
+export const collections = {
+  PRODUCTS: "products",
+};
+
+// function to get collection
+export async function dbConnect(collectionName) {
+  const client = await clientPromise;
+  return client.db(dbName).collection(collectionName);
+}

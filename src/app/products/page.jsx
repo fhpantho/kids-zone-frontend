@@ -1,12 +1,14 @@
-'use client'
 
 import Products from '@/components/home/Products';
-import React from 'react';
+import Loading from './loading';
+import React, { Suspense } from 'react';
 
 const page = () => {
     return (
         <div>
-            <Products></Products>
+            <Suspense fallback={<Loading />}>
+                <Products />
+            </Suspense>
         </div>
     );
 };

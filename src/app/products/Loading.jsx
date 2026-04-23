@@ -1,3 +1,5 @@
+'use client';
+
 import ProductCardSkeleton from '../../components/loading/ProductCardSkeleton';
 
 export default function Loading() {

@@ -1,26 +1,34 @@
 'use server'
-import { dbConnect, collection } from "@/lib/dbConnect"
+import { dbConnect, collections } from "@/lib/dbConnect"
 import { ObjectId } from "mongodb"
 
-
-
-// getting all the product
+// getting all products
 export const getProducts = async () => {
-    const products = await dbConnect(collection.PRODUCTS).find().toArray();
-    return products;
+    const productCollection = await dbConnect(collections.PRODUCTS);
+    const products = await productCollection.find().toArray();
+
+    // convert ObjectId → string
+    const plainProducts = products.map(product => ({
+        ...product,
+        _id: product._id.toString()
+    }));
+
+    return plainProducts;
 }
 
 // getting single product
-
 export const getSingleProduct = async (id) => {
-
-    if(id.length != 24){
-        return {}
+    if (!ObjectId.isValid(id)) {
+        return {};
     }
 
-    const query = {_id : new ObjectId(id)}
+    const productCollection = await dbConnect(collections.PRODUCTS);
+    const product = await productCollection.findOne({ _id: new ObjectId(id) });
 
+    if (!product) return {};
 
-    const product = await dbConnect(collection.PRODUCTS).findOne(query);
-    return product || {}
+    return {
+        ...product,
+        _id: product._id.toString()
+    };
 }
