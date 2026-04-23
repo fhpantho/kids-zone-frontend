@@ -5,8 +5,8 @@ import React from "react";
 
 const Baner = () => {
   return (
-    <div className="flex justify-between items-center">
-      <div className="flex-1 space-y-5">
+    <div className="flex sm:justify-between items-center justify-center sm:flex-row flex-cols flex-col-reverse">
+      <div className="flex-1 space-y-5 text-center sm:text-start">
         <h2 className={`${mayaboti.className} text-6xl font-bold leading-20`}>
           আপনার শিশুকে দিন একটি
           <span className="text-primary"> সুন্দর ভবিষ্যৎ</span>
