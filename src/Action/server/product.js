@@ -18,17 +18,13 @@ export const getProducts = async () => {
 
 // getting single product
 export const getSingleProduct = async (id) => {
-    if (!ObjectId.isValid(id)) {
-        return {};
-    }
+
+    
 
     const productCollection = await dbConnect(collections.PRODUCTS);
-    const product = await productCollection.findOne({ _id: new ObjectId(id) });
 
-    if (!product) return {};
+    const query = { _id: new ObjectId(id) }
 
-    return {
-        ...product,
-        _id: product._id.toString()
-    };
+    const product = await productCollection.findOne(query);
+    return product || {}
 }
