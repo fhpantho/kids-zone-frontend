@@ -49,11 +49,15 @@ const ProductCard = ({ product }) => {
 
         <div className="card-actions mt-auto">
           <Link href={`/products/${_id}`} className='flex w-full'>
-              <button className="btn btn-primary w-full flex items-center gap-2">
+              <button className="btn btn-primary btn-outline w-full flex items-center gap-2">
+            
+            View Details
+          </button>
+          </Link>
+          <button className="btn btn-primary w-full flex items-center gap-2">
             <FaShoppingCart />
             Add to Cart
           </button>
-          </Link>
           
         </div>
 
